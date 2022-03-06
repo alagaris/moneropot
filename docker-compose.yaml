@@ -1,0 +1,33 @@
+version: "3"
+services:
+  testnet:
+    image: "ghcr.io/alagaris/monero-private-testnet:latest"
+    ports:
+      - "127.0.0.1:18081:18081"
+      - "127.0.0.1:18082:18082"
+      - "127.0.0.1:18083:18083"
+      - "127.0.0.1:28081:28081"
+    volumes:
+      - './testnet:/testnet'
+  dbadmin:
+    image: coleifer/sqlite-web
+    ports:
+      - 8081:8080
+    volumes:
+      - "./backend/data:/data"
+    environment:
+      - SQLITE_DATABASE=data.db
+    depends_on:
+      - backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: dev.Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - testnet
+    entrypoint: CompileDaemon
+    command: -command '/app/moneropot -rpc-address http://testnet:18082/json_rpc -bind 0.0.0.0:5000'

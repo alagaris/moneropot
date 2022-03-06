@@ -1,0 +1,219 @@
+@apiUrl = http://localhost:5000
+@mineWallet = http://localhost:18081
+@appWallet = http://localhost:18082
+@personWallet = http://localhost:18083
+@daemonUrl = http://localhost:28081
+
+@mineAddress = A2eCGjvYkowZbMtshUi7ki7QrvDPtiepgfsy9TQLSHXLBfgihU6z8ZBYFP83yZ86MxdMxTJyqUFARFHAgtaP9eFtJNC69Jk
+@appAddress = A1wwHv2sScyAnR4PFuzmj2cgjSYziqxtEfd78BAxkjUFhZSxS39bTh1YfmK1g287Ta5iVpN2daT5iiRB6sqUbCqv5FBWFDZ
+@personAddress = 9xgcCBjmPLvK49CRfJQk46DbHJGSErHJBAJ9dT9nV3FxGVgo5oyRpHiRsJEMq6a1UVfXTpQEhfj3nYJH7gxo15b9Q4u6NjW
+
+###
+GET {{apiUrl}}/api/info
+
+###
+GET {{apiUrl}}/api/entries
+###
+
+GET {{apiUrl}}/api/internal/FlushWinPayload?month=2021-10
+X-Key: abc123
+
+###
+
+GET {{apiUrl}}/api/internal/GetWalletAddress
+
+###
+
+POST {{apiUrl}}/api/internal/RunPickWinner
+X-Key: abc123
+
+###
+
+POST {{apiUrl}}/api/internal/Contact
+Content-Type: application/json
+
+{
+    "contact": "test",
+    "message": "hello world"
+}
+
+###
+
+POST {{apiUrl}}/api/accounts
+Content-Type: application/json
+
+{
+    "username": null,
+    "address": "BgvUCKSTmu2ZGsWhMr3k6vQwaVHLBqcpbTzbqNRoxQo2NMDY3PDn8eQAf7Qio2tjfj9xofbisWc6tMyn1z3copumNQcNdra"
+}
+
+###
+
+POST {{appWallet}}/json_rpc
+Content-Type: application/json
+
+{
+    "jsonrpc": "2.0",
+    "id": "0",
+    "method": "validate_address",
+    "params": {
+        "account_index": 0,
+        "label": "testaddress"
+    }
+}
+
+###
+
+POST {{mineWallet}}/json_rpc
+Content-Type: application/json
+
+{
+    "jsonrpc": "2.0",
+    "id": "0",
+    "method": "start_mining",
+    "params": {
+        "threads_count": 1
+    }
+}
+}
+
+###
+
+POST http://127.0.0.1:38081/start_mining
+Content-Type: application/json
+
+{
+    "do_background_mining": false,
+    "ignore_battery": false,
+    "miner_address": "9yjXSdmMaeKK9jCzFVNnotEBJwc4krtke9HVTViNrSXoKHfhgqn8JYNXk65XvLtBSL9vAyDYgxW37XgNAHgfwhs9B7TH1xk",
+    "threads_count": 1
+}
+
+###
+
+POST {{mineWallet}}/json_rpc
+Content-Type: application/json
+
+{
+    "jsonrpc": "2.0",
+    "id": "0",
+    "method": "stop_mining"
+}
+
+###
+
+POST {{mineWallet}}/json_rpc
+Content-Type: application/json
+
+{
+    "jsonrpc": "2.0",
+    "id": "0",
+    "method": "get_address"
+}
+
+###
+
+POST {{appWallet}}/json_rpc
+Content-Type: application/json
+
+{
+    "jsonrpc": "2.0",
+    "id": "0",
+    "method": "get_address"
+}
+
+###
+
+POST {{personWallet}}/json_rpc
+Content-Type: application/json
+
+{
+    "jsonrpc": "2.0",
+    "id": "0",
+    "method": "create_address",
+    "params": {"account_index": 0}
+}
+
+###
+
+POST {{mineWallet}}/json_rpc
+Content-Type: application/json
+
+{"jsonrpc":"2.0","id":"0","method":"get_height"}
+
+###
+
+POST {{mineWallet}}/json_rpc
+Content-Type: application/json
+
+{
+    "jsonrpc": "2.0",
+    "id": "0",
+    "method": "transfer",
+    "params": {
+        "destinations": [{
+            "amount": 5000000000000,
+            "address": "{{appAddress}}"
+        }],
+        "do_not_relay": false
+    }
+}
+
+###
+
+POST {{mineWallet}}/json_rpc
+Content-Type: application/json
+
+{
+    "jsonrpc": "2.0",
+    "id": "0",
+    "method": "transfer",
+    "params": {
+        "destinations": [{
+            "amount": 15274150456 ,
+            "address": "Bdu3DzboP9w6v4gcobBk4MQE7eHvEUaKe4mE8mWvN3nuaVMXQm7DtgE27jboLj817yhk9vKBqfbhcJTdMCCJxR7X6nZ7xSM"
+        }],
+        "do_not_relay": false
+    }
+}
+
+###
+
+POST {{appWallet}}/json_rpc
+Content-Type: application/json
+
+{
+    "jsonrpc": "2.0",
+    "id": "0",
+    "method": "transfer_split",
+    "params": {
+        "destinations": [{
+            "amount": 366148828174753,
+            "address": "Bb2sAWEbVYLjU8Rc391b9LY68vBKS13Sd137x78guenqAh5oq4HKNNVQcHdB9utcJmTk9CJKTEBDv51jArvuPvcC1JAdzoY"
+        }, {
+            "amount": 89669100777490,
+            "address": "BgyvVrbBtr9Kz7EKb4ospWPg7Ac3dTmxgSPzyUvjGAD6cJb2Drd2nhhCgyTkCCpDpxat29N2eNg4sXspcbZQdD5dATWftpw"
+        }],
+        "mixin": 8,
+        "ring_size": 0,
+        "unlock_time": 10,
+        "priority": 0,
+        "get_tx_hex": false,
+        "new_algorithm": false,
+        "get_tx_metadata": false
+    }
+}
+
+
+###
+POST {{mineWallet}}/json_rpc
+Content-Type: application/json
+
+{"jsonrpc":"2.0","id":"0","method":"get_balance"}
+
+###
+
+GET {{daemonUrl}}/json_rpc
+Content-Type: application/json
+
+{"jsonrpc":"2.0","id":"0","method":"get_info"}

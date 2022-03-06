@@ -1,0 +1,10 @@
+tmp
+testnet
+*.exe
+*.exe~
+backend/moneropot
+data
+data.db
+*.log
+.DS_Store
+.vscode
