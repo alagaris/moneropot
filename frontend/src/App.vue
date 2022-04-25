@@ -1,7 +1,6 @@
 <script>
 import axios from "axios";
 import LineInfo from "./components/LineInfo.vue";
-import QRCodeVue3 from "qrcode-vue3";
 import Faq from "./components/Faq.vue";
 import MoneroRelated from "./components/MoneroRelated.vue"
 import Contact from "./components/Contact.vue";
@@ -20,7 +19,6 @@ export default {
   name: "App",
   components: {
     LineInfo,
-    QRCodeVue3,
     Faq,
     MoneroRelated,
     Contact,
@@ -33,9 +31,9 @@ export default {
         if (this.entryQty !== 1 || Number(this.account.xmr) > 0) {
           let price = Number(this.info.entry_price);
           price = ((price * this.entryQty) - Number(this.account.xmr)).toFixed(12);
-          return this.account.address_uri.replace(/(tx_amount)=([\d\\.]+)/, '$1=' + price);
+          return encodeURIComponent(this.account.address_uri.replace(/(tx_amount)=([\d\\.]+)/, '$1=' + price));
         }
-        return this.account.address_uri;
+        return encodeURIComponent(this.account.address_uri);
       }
       return null;
     },
@@ -246,12 +244,9 @@ export default {
     </div>
     <div class="grid grid-cols-12 gap-0">
       <div
-        class="bg-fixed relative col-span-12 sm:col-span-12 md:col-span-7 lg:col-span-8 xxl:col-span-8 hidden md:block"
-      >
+        class="bg-fixed relative col-span-12 sm:col-span-12 md:col-span-7 lg:col-span-8 xxl:col-span-8 hidden md:block">
         <img src="./assets/bg.png" class="w-full" />
-        <div
-          class="absolute inset-0 z-20 flex items-center justify-center h-full bg-gray-900 bg-opacity-50"
-        >
+        <div class="absolute inset-0 z-20 flex items-center justify-center h-full bg-gray-900 bg-opacity-50">
           <div class="flex text-center h-full items-center fixed top-0" v-if="info">
             <div class="border-2 p-4 rounded-md bg-gray-100 text-gray-500">
               Price Reset in {{ timers.until_price }}
@@ -261,19 +256,14 @@ export default {
           </div>
         </div>
       </div>
-      <div
-        class="col-span-12 sm:col-span-12 md:col-span-5 lg:col-span-4 xxl:col-span-4"
-        v-if="info"
-      >
+      <div class="col-span-12 sm:col-span-12 md:col-span-5 lg:col-span-4 xxl:col-span-4" v-if="info">
         <div>
           <div class="border-b">
             <div class="my-4 px-6">
               <h2 class="font-semibold text-2xl">
                 Monero Pot
-                <span
-                  v-if="info.wallet_offline"
-                  class="bg-red-600 p-2 rounded-lg text-white font-bold"
-                >Wallet Offline</span>
+                <span v-if="info.wallet_offline" class="bg-red-600 p-2 rounded-lg text-white font-bold">Wallet
+                  Offline</span>
               </h2>
             </div>
           </div>
@@ -282,18 +272,14 @@ export default {
             <h4 class="font-semibold">{{ timers.until_draw }}</h4>
           </div>
           <div class="flex space-x-0 flex-col lg:flex-row lg:space-x-2 my-2 px-6">
-            <div
-              class="bg-gray-600 p-4 border-2 rounded-md shadow-lg w-full text-white text-center"
-            >
+            <div class="bg-gray-600 p-4 border-2 rounded-md shadow-lg w-full text-white text-center">
               <h1 class="text-xl font-light">WIN XMR</h1>
               <h1 class="text-2xl text-green-100 font-semibold">
                 {{ info.win_amount }}
                 <div class="text-sm">{{ toUsd(info.win_amount) }}</div>
               </h1>
             </div>
-            <div
-              class="bg-yellow-700 p-4 border-2 rounded-md shadow-lg w-full text-white text-center"
-            >
+            <div class="bg-yellow-700 p-4 border-2 rounded-md shadow-lg w-full text-white text-center">
               <h1 class="text-xl font-light">REFERRAL XMR</h1>
               <h1 class="text-2xl text-red-100 font-semibold">
                 {{ info.ref_amount }}
@@ -308,7 +294,7 @@ export default {
             <div class="text-xs">
               <p class="text-center">Scan qr code or copy the address below into your wallet app.</p>
               <div class="flex justify-center">
-                <QRCodeVue3 :value="addressUri" :width="200" :height="200" />
+                <img :src="'/api/internal/QrCode?d=' + addressUri" />
               </div>
               <p class="text-center pb-1">Number of Entries</p>
               <div class="text-center mb-3">
@@ -317,32 +303,18 @@ export default {
                 <button type="button" class="button" @click="entryQty++">+</button>
               </div>
               <div class="flex">
-                <input
-                  type="text"
-                  readonly
-                  class="rounded-sm px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
-                  :value="account.address"
-                />
-                <button
-                  type="button"
-                  class="rounded-sm block text-center text-white bg-gray-700 px-2 my-1"
-                  @click="copyToClipboard(account.address)"
-                >Copy</button>
+                <input type="text" readonly class="rounded-sm px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
+                  :value="account.address" />
+                <button type="button" class="rounded-sm block text-center text-white bg-gray-700 px-2 my-1"
+                  @click="copyToClipboard(account.address)">Copy</button>
               </div>
               <template v-if="refUrl">
                 <div class="mt-2">Referral Link:</div>
                 <div class="flex">
-                  <input
-                    type="text"
-                    readonly
-                    class="rounded-sm px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
-                    :value="refUrl"
-                  />
-                  <button
-                    type="button"
-                    class="rounded-sm block text-center text-white bg-gray-700 px-2 my-1"
-                    @click="copyToClipboard(refUrl)"
-                  >Copy</button>
+                  <input type="text" readonly class="rounded-sm px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
+                    :value="refUrl" />
+                  <button type="button" class="rounded-sm block text-center text-white bg-gray-700 px-2 my-1"
+                    @click="copyToClipboard(refUrl)">Copy</button>
                 </div>
               </template>
             </div>
@@ -351,12 +323,9 @@ export default {
               <small class="text-gray-600">({{ toUsd(info.entry_price) }})</small>
             </line-info>
             <line-info label="Number of Entries" :success="account.entries > 0">
-              <span
-                :class="[
-                  account.entries > 0 ? 'underline cursor-pointer' : null,
-                ]"
-                @click="account.entries > 0 ? viewEntries(account.id) : null"
-              >{{ account.entries }}</span>
+              <span :class="[
+                account.entries > 0 ? 'underline cursor-pointer' : null,
+              ]" @click="account.entries > 0 ? viewEntries(account.id) : null">{{ account.entries }}</span>
             </line-info>
             <line-info label="Unused XMR" :success="account.xmr > 0">
               {{ account.xmr }}
@@ -364,10 +333,8 @@ export default {
             </line-info>
             <line-info label="Referrals" :success="account.referrals > 0">{{ account.referrals }}</line-info>
             <div class="text-center">
-              <a
-                class="cursor-pointer underline text-sm"
-                @click="toggleModal('MoneroRelated')"
-              >Monero Related Things</a>
+              <a class="cursor-pointer underline text-sm" @click="toggleModal('MoneroRelated')">Monero Related
+                Things</a>
               <span class="text-sm pl-1">(to visit while you're waiting)</span>
             </div>
           </div>
@@ -386,14 +353,9 @@ export default {
                       )
                     </small>
                   </label>
-                  <input
-                    type="text"
-                    id="address"
-                    autofocus
-                    class="rounded-sm px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
-                    v-model="form.address"
-                    placeholder="Monero Address"
-                  />
+                  <input type="text" id="address" autofocus
+                    class="rounded-sm px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full" v-model="form.address"
+                    placeholder="Monero Address" />
                 </div>
                 <div class="my-5 text-sm">
                   <label for="username" class="block text-black">
@@ -404,49 +366,28 @@ export default {
                       )
                     </small>
                   </label>
-                  <input
-                    id="username"
-                    v-model="form.username"
-                    type="text"
-                    autofocus
+                  <input id="username" v-model="form.username" type="text" autofocus
                     class="rounded-sm px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
-                    placeholder="Enter Username"
-                  />
+                    placeholder="Enter Username" />
                   <small class="text-gray-500">Keep address for next drawing or for referrals</small>
                 </div>
                 <div class="my-5">
-                  <button
-                    :disabled="!formValid"
-                    type="submit"
-                    :class="{ 'opacity-50 cursor-not-allowed': !formValid }"
-                    class="rounded-sm block text-center text-white bg-gray-800 p-3 duration-300 hover:bg-black w-full"
-                  >View Entry Address &amp; Send Payment</button>
+                  <button :disabled="!formValid" type="submit" :class="{ 'opacity-50 cursor-not-allowed': !formValid }"
+                    class="rounded-sm block text-center text-white bg-gray-800 p-3 duration-300 hover:bg-black w-full">View
+                    Entry Address &amp; Send Payment</button>
                 </div>
               </form>
               <div class="text-center">
                 <a class="cursor-pointer underline text-sm" @click="viewEntries(null)">Entries</a>
                 &nbsp;
-                <a
-                  class="cursor-pointer underline text-sm"
-                  @click="toggleModal('winner')"
-                  v-if="info && info.last_winner"
-                >Winner</a>
+                <a class="cursor-pointer underline text-sm" @click="toggleModal('winner')"
+                  v-if="info && info.last_winner">Winner</a>
                 &nbsp;
-                <a
-                  class="cursor-pointer underline text-sm"
-                  @click="toggleModal('faq')"
-                >FAQ</a>
+                <a class="cursor-pointer underline text-sm" @click="toggleModal('faq')">FAQ</a>
                 &nbsp;
-                <a
-                  class="cursor-pointer underline text-sm"
-                  @click="toggleModal('contact')"
-                >Contact</a>
+                <a class="cursor-pointer underline text-sm" @click="toggleModal('contact')">Contact</a>
                 &nbsp;
-                <a
-                  target="_blank"
-                  class="underline text-sm"
-                  href="https://github.com/alagaris/moneropot"
-                >Source</a>
+                <a target="_blank" class="underline text-sm" href="https://github.com/alagaris/moneropot">Source</a>
               </div>
             </div>
           </div>

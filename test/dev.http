@@ -29,6 +29,10 @@ X-Key: abc123
 
 ###
 
+GET {{apiUrl}}/api/internal/QrCode?d=12345
+
+###
+
 POST {{apiUrl}}/api/internal/Contact
 Content-Type: application/json
 

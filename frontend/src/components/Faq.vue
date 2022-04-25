@@ -1,10 +1,8 @@
 <script>
 import Modal from "./Modal.vue";
-import QRCodeVue3 from "qrcode-vue3";
 export default {
   components: {
     Modal,
-    QRCodeVue3,
   },
   props: {
     info: Object,
@@ -26,18 +24,14 @@ export default {
       <p>Every first day of the month.</p>
     </div>
     <div class="bg-gray-200 p-5 my-3">
-      <h5
-        class="text-lg font-semibold border-b-2 border-gray-400 pb-2 mb-4"
-      >How is the entry pot distributed?</h5>
+      <h5 class="text-lg font-semibold border-b-2 border-gray-400 pb-2 mb-4">How is the entry pot distributed?</h5>
       <p>
         70% to the winner, 20% goes to referral or the next draw if no referral
         and last 10% to server maintenance.
       </p>
     </div>
     <div class="bg-gray-200 p-5 my-3">
-      <h5
-        class="text-lg font-semibold border-b-2 border-gray-400 pb-2 mb-4"
-      >What is the entry price?</h5>
+      <h5 class="text-lg font-semibold border-b-2 border-gray-400 pb-2 mb-4">What is the entry price?</h5>
       <p>
         Entry price is currently {{ info.entry_price }} XMR. It's the value of
         XMR at $2.50 (USD) at the time of adjustment and will be that price in
@@ -45,18 +39,14 @@ export default {
       </p>
     </div>
     <div class="bg-gray-200 p-5 my-3">
-      <h5
-        class="text-lg font-semibold border-b-2 border-gray-400 pb-2 mb-4"
-      >How can I see my entries?</h5>
+      <h5 class="text-lg font-semibold border-b-2 border-gray-400 pb-2 mb-4">How can I see my entries?</h5>
       <p>
         Enter your monero address in the address field. Click View Entry Address
         then click the Entries # link.
       </p>
     </div>
     <div class="bg-gray-200 p-5 my-3">
-      <h5
-        class="text-lg font-semibold border-b-2 border-gray-400 pb-2 mb-4"
-      >How do I know the drawing is fair?</h5>
+      <h5 class="text-lg font-semibold border-b-2 border-gray-400 pb-2 mb-4">How do I know the drawing is fair?</h5>
       <p>
         The drawing of this system is easily verifyable with 2 things. First is
         our sign key, which is the first block of the month. The sign key used
@@ -77,18 +67,12 @@ export default {
       </p>
       <p class="mt-2">
         You can use this
-        <a
-          href="https://emn178.github.io/online-tools/sha256.html"
-          class="underline"
-          target="_blank"
-        >SHA256 tool</a>
+        <a href="https://emn178.github.io/online-tools/sha256.html" class="underline" target="_blank">SHA256 tool</a>
         to verify that your hashes are valid.
       </p>
     </div>
     <div class="bg-gray-200 p-5 my-3">
-      <h5
-        class="text-lg font-semibold border-b-2 border-gray-400 pb-2 mb-4"
-      >Why do you ask for a username?</h5>
+      <h5 class="text-lg font-semibold border-b-2 border-gray-400 pb-2 mb-4">Why do you ask for a username?</h5>
       <p>
         Username will keep your monero entry address for the next drawing if you
         have entries or referred an entry.
@@ -102,11 +86,10 @@ export default {
       </p>
     </div>
     <div class="bg-gray-200 p-5 my-3">
-      <h5
-        class="text-lg font-semibold border-b-2 border-gray-400 pb-2 mb-4"
-      >I want to increase the pot without entries, what do I do?</h5>
+      <h5 class="text-lg font-semibold border-b-2 border-gray-400 pb-2 mb-4">I want to increase the pot without entries,
+        what do I do?</h5>
       <p>You can transfer XMR to the address below:</p>
-      <QRCodeVue3 :value="info.address" :width="200" :height="200" />
+      <img :src="'/api/internal/QrCode?d=' + info.address" />
       <input type="text" class="w-full py-2 my-1 bg-gray-200" readonly :value="info.address" />
     </div>
   </modal>

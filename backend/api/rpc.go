@@ -6,6 +6,8 @@ import (
 	"moneropot/util"
 	"net/http"
 	"time"
+
+	qrcode "github.com/skip2/go-qrcode"
 )
 
 var (
@@ -60,4 +62,16 @@ func (s *Server) FlushWinPayload(r *http.Request) interface{} {
 		return errNotFound
 	}
 	return db.FlushWinPayload(m)
+}
+
+func (s *Server) QrCode(r *http.Request) interface{} {
+	d := s.QueryParam(r, "d")
+	png, err := qrcode.Encode(d, qrcode.Medium, 256)
+	if err != nil {
+		return err
+	}
+	return rpcType{
+		contentType: "image/png",
+		body:        png,
+	}
 }
