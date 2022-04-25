@@ -65,8 +65,12 @@ func (s *Server) FlushWinPayload(r *http.Request) interface{} {
 }
 
 func (s *Server) QrCode(r *http.Request) interface{} {
-	d := s.QueryParam(r, "d")
-	png, err := qrcode.Encode(d, qrcode.Medium, 256)
+	addr := s.QueryParam(r, "addr")
+	amt := s.QueryParam(r, "amt")
+	if amt != "" {
+		addr = "monero:" + addr + "?tx_amount=" + amt
+	}
+	png, err := qrcode.Encode(addr, qrcode.Medium, 256)
 	if err != nil {
 		return err
 	}

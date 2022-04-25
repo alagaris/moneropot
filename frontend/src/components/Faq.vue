@@ -89,7 +89,7 @@ export default {
       <h5 class="text-lg font-semibold border-b-2 border-gray-400 pb-2 mb-4">I want to increase the pot without entries,
         what do I do?</h5>
       <p>You can transfer XMR to the address below:</p>
-      <img :src="'/api/internal/QrCode?d=' + info.address" />
+      <img :src="'/api/internal/QrCode?addr=' + info.address" />
       <input type="text" class="w-full py-2 my-1 bg-gray-200" readonly :value="info.address" />
     </div>
   </modal>

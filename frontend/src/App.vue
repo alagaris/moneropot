@@ -26,16 +26,14 @@ export default {
     Winner,
   },
   computed: {
-    addressUri() {
+    entryFee() {
+      let price = Number(this.info.entry_price);
       if (this.account) {
         if (this.entryQty !== 1 || Number(this.account.xmr) > 0) {
-          let price = Number(this.info.entry_price);
           price = ((price * this.entryQty) - Number(this.account.xmr)).toFixed(12);
-          return encodeURIComponent(this.account.address_uri.replace(/(tx_amount)=([\d\\.]+)/, '$1=' + price));
         }
-        return encodeURIComponent(this.account.address_uri);
       }
-      return null;
+      return price
     },
     formValid() {
       return (
@@ -294,7 +292,7 @@ export default {
             <div class="text-xs">
               <p class="text-center">Scan qr code or copy the address below into your wallet app.</p>
               <div class="flex justify-center">
-                <img :src="'/api/internal/QrCode?d=' + addressUri" />
+                <img :src="'/api/internal/QrCode?addr=' + account.address + '&amt=' + entryFee" />
               </div>
               <p class="text-center pb-1">Number of Entries</p>
               <div class="text-center mb-3">
@@ -318,9 +316,9 @@ export default {
                 </div>
               </template>
             </div>
-            <line-info label="Entry Price" :success="true">
-              {{ info.entry_price }}
-              <small class="text-gray-600">({{ toUsd(info.entry_price) }})</small>
+            <line-info label="Entry Amount" :success="true">
+              {{ entryFee }}
+              <small class="text-gray-600">({{ toUsd(entryFee) }})</small>
             </line-info>
             <line-info label="Number of Entries" :success="account.entries > 0">
               <span :class="[
