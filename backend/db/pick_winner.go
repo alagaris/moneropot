@@ -16,6 +16,7 @@ import (
 
 type (
 	WinnerInfo struct {
+		Date     string           `json:"date,omitempty"`
 		SignKey  string           `json:"sign_key"`
 		Block    string           `json:"block"`
 		Entries  int64            `json:"entries"`

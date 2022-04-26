@@ -12,9 +12,6 @@ export default {
 </script>
 
 <template>
-  <span
-    v-for="(v, idx) in value"
-    :key="idx"
-    :class="[indexes.indexOf(idx) !== -1 ? highlight : null]"
-  >{{ v }}</span>
+  <span class="font-mono" v-for="(v, idx) in value" :key="idx"
+    :class="[indexes.indexOf(idx) !== -1 ? highlight : null]">{{ v }}</span>
 </template>

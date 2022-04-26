@@ -114,7 +114,7 @@ func (s *Server) handleGetInfo() http.HandlerFunc {
 				return err
 			}
 			resp.SignKey = signKey
-			lastWinner, err := db.GetLastWinner()
+			lastWinner, err := db.GetWinner("")
 			if err != nil {
 				return err
 			}

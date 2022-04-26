@@ -79,3 +79,22 @@ func (s *Server) QrCode(r *http.Request) interface{} {
 		body:        png,
 	}
 }
+
+func (s *Server) Winner(r *http.Request) interface{} {
+	dt := s.QueryParam(r, "dt")
+	var (
+		w   *db.WinnerInfo
+		err error
+	)
+	item, ok := util.Cache.Get(dt)
+	if !ok {
+		w, err = db.GetWinner(dt)
+		if err != nil {
+			return err
+		}
+		util.Cache.Set(dt, w, time.Hour*24)
+	} else {
+		w = item.(*db.WinnerInfo)
+	}
+	return w
+}

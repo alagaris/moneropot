@@ -190,19 +190,24 @@ func GetIdByUsername(userName string) (int64, error) {
 	return account.ID, nil
 }
 
-func GetLastWinner() (*WinnerInfo, error) {
+func GetWinner(dt string) (*WinnerInfo, error) {
 	db := MustDB()
 	winner := Winner{}
-	err := db.Get(&winner, `SELECT * FROM winners ORDER BY date DESC`)
+	var err error
+	if dt == "" {
+		err = db.Get(&winner, `SELECT * FROM winners ORDER BY date DESC`)
+	} else {
+		err = db.Get(&winner, `SELECT * FROM winners WHERE date = ?`, dt)
+	}
 	if err != nil {
 		if util.NoRows(err) {
 			return nil, nil
 		}
 		return nil, err
 	}
-	winInfo := &WinnerInfo{}
+	winInfo := &WinnerInfo{Date: winner.Date}
 	if err := json.Unmarshal([]byte(winner.Info), winInfo); err != nil {
-		return nil, fmt.Errorf("GetLastWinner error %v", err)
+		return nil, fmt.Errorf("GetWinner error %v", err)
 	}
 	accounts := winInfo.Accounts
 	winInfo.Accounts = make(map[string][]int)
