@@ -12,6 +12,7 @@ import (
 type config struct {
 	Bind          string
 	MaintAddress  string
+	FundAddress   string
 	RpcUser       string
 	RpcPass       string
 	RpcAddress    string
@@ -37,6 +38,7 @@ var (
 func ParseArgs() {
 	flag.StringVar(&Config.Bind, "bind", "localhost:5000", "address:port to bind server")
 	flag.StringVar(&Config.MaintAddress, "maint-address", "9xgcCBjmPLvK49CRfJQk46DbHJGSErHJBAJ9dT9nV3FxGVgo5oyRpHiRsJEMq6a1UVfXTpQEhfj3nYJH7gxo15b9Q4u6NjW", "monero address to send 10% after drawing")
+	flag.StringVar(&Config.FundAddress, "fund-address", "A2eCGjvYkowZbMtshUi7ki7QrvDPtiepgfsy9TQLSHXLBfgihU6z8ZBYFP83yZ86MxdMxTJyqUFARFHAgtaP9eFtJNC69Jk", "fund address to send 5% after drawing")
 	flag.StringVar(&Config.RpcAddress, "rpc-address", "http://localhost:18082/json_rpc", "monero wallet rpc address")
 	flag.StringVar(&Config.RpcUser, "rpc-user", "", "monero wallet rpc username")
 	flag.StringVar(&Config.RpcPass, "rpc-pass", "", "monero wallet rpc password")

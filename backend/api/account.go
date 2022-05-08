@@ -75,6 +75,7 @@ func (s *Server) handleGetInfo() http.HandlerFunc {
 		WinAmount         string         `json:"win_amount"`
 		AffiliateAmount   string         `json:"ref_amount"`
 		MaintenanceAmount string         `json:"maint_amount"`
+		FundAmount        string         `json:"fund_amount"`
 		EntryPrice        string         `json:"entry_price"`
 		XmrRate           string         `json:"xmr_rate"`
 		TotalEntries      int64          `json:"entries"`
@@ -128,6 +129,7 @@ func (s *Server) handleGetInfo() http.HandlerFunc {
 				resp.WinAmount = monerorpc.XMRToDecimal(amt.Winner)
 				resp.AffiliateAmount = monerorpc.XMRToDecimal(amt.Referrals)
 				resp.MaintenanceAmount = monerorpc.XMRToDecimal(amt.Maintenance)
+				resp.FundAmount = monerorpc.XMRToDecimal(amt.Fund)
 			}
 			address := s.GetWalletAddress(r)
 			addr, ok := address.(string)

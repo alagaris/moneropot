@@ -34,6 +34,7 @@ type (
 
 	Amount struct {
 		Winner      uint64 `json:"winner"`
+		Fund        uint64 `json:"fund"`
 		Referrals   uint64 `json:"referrals"`
 		Maintenance uint64 `json:"maintenance"`
 	}
@@ -245,7 +246,8 @@ func GetDistributedAmounts(all bool) (*Amount, error) {
 	}
 	amt := &Amount{
 		Winner:      uint64(bal * .7),
-		Referrals:   uint64(bal * .2),
+		Fund:        uint64(bal * .05),
+		Referrals:   uint64(bal * .15),
 		Maintenance: uint64(bal * .1),
 	}
 	return amt, nil

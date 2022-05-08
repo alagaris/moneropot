@@ -12,22 +12,15 @@ export default {
 
 <template>
   <modal title="FAQ">
-    <div class="bg-gray-200 p-5 my-3">
-      <h5 class="text-lg font-semibold border-b-2 border-gray-400 pb-2 mb-4">How to get a refund?</h5>
-      <p>
-        All entries on January 2022 is available for refund. Please send a message in contact form
-        with your txid, total amount and monero address to send the refund.
-      </p>
-    </div>
     <div class="bg-gray-200 p-5">
       <h5 class="text-lg font-semibold border-b-2 border-gray-400 pb-2 mb-4">When is the draw date?</h5>
-      <p>Every first day of the month.</p>
+      <p>Every first day of the month. (UTC)</p>
     </div>
     <div class="bg-gray-200 p-5 my-3">
       <h5 class="text-lg font-semibold border-b-2 border-gray-400 pb-2 mb-4">How is the entry pot distributed?</h5>
       <p>
-        70% to the winner, 20% goes to referral or the next draw if no referral
-        and last 10% to server maintenance.
+        70% to the winner, 15% goes to referral or the next draw if no referral, 10% to server maintenance and
+        5% to Monero General Fund.
       </p>
     </div>
     <div class="bg-gray-200 p-5 my-3">
@@ -78,7 +71,7 @@ export default {
         have entries or referred an entry.
       </p>
       <p class="mt-2">
-        With username you can use it for affiliate and earn 20% for each entry
+        With username you can use it for affiliate and earn 15% for each entry
         you refer. It’s paid on the next drawing. If your referral amount is
         less than the entry price at the time of drawing you'll be credited in
         your monero address where you can add additional XMR to make it a valid

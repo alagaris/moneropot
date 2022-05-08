@@ -62,8 +62,8 @@ func TestPickWinner(t *testing.T) {
 			transferred[dest.Address] = v + dest.Amount
 			total += dest.Amount
 		}
-		if total != 3885714285714 {
-			t.Errorf("Wanted total transfer 3885714285714 got %d", total)
+		if total != 3914285714285 {
+			t.Errorf("Wanted total transfer 3914285714285 got %d", total)
 		}
 		return `{}`
 	})
@@ -164,6 +164,9 @@ func TestPickWinner(t *testing.T) {
 	}
 	if transferred[util.Config.MaintAddress] != 400000000000 {
 		t.Errorf("Wanted maintenance amount 40000000000 got %d", transferred[util.Config.MaintAddress])
+	}
+	if transferred[util.Config.FundAddress] != 200000000000 {
+		t.Errorf("Wanted fund amount 20000000000 got %d", transferred[util.Config.FundAddress])
 	}
 	entryID, _ := GetMetadata("entry_id", "1000")
 	if entryID != "0" {

@@ -52,6 +52,13 @@ export default {
         until_draw: this.getTimeLeft("until_draw"),
         until_price: this.getTimeLeft("until_price")
       }
+    },
+    tabAmount() {
+      const key = {
+        REFERRAL: "ref_amount",
+        FUND: "fund_amount"
+      }[this.tab]
+      return this.info[key] || 0;
     }
   },
   methods: {
@@ -221,7 +228,12 @@ export default {
       account: null,
       error: {},
       loading: 0,
-      eventSource: null
+      eventSource: null,
+      tabs: [
+        "REFERRAL",
+        "FUND"
+      ],
+      tab: "REFERRAL"
     };
   },
 };
@@ -243,7 +255,7 @@ export default {
     <div class="grid grid-cols-12 gap-0">
       <div
         class="bg-fixed relative col-span-12 sm:col-span-12 md:col-span-7 lg:col-span-8 xxl:col-span-8 hidden md:block">
-        <img src="./assets/bg.png" class="w-full" />
+        <img src="./assets/m_bg.png" class="w-full" />
         <div class="absolute inset-0 z-20 flex items-center justify-center h-full bg-gray-900 bg-opacity-50">
           <div class="flex text-center h-full items-center fixed top-0" v-if="info">
             <div class="border-2 p-4 rounded-md bg-gray-100 text-gray-500">
@@ -278,10 +290,13 @@ export default {
               </h1>
             </div>
             <div class="bg-yellow-700 p-4 border-2 rounded-md shadow-lg w-full text-white text-center">
-              <h1 class="text-xl font-light">REFERRAL XMR</h1>
+              <h1 class="text-xl font-light">
+                <span class="cursor-pointer mr-2" :class="{ underline: tab === t }" @click="tab = t" v-for="t in tabs"
+                  :key="t">{{ t }}</span>
+              </h1>
               <h1 class="text-2xl text-red-100 font-semibold">
-                {{ info.ref_amount }}
-                <div class="text-sm">{{ toUsd(info.ref_amount) }}</div>
+                {{ tabAmount }}
+                <div class="text-sm">{{ toUsd(tabAmount) }}</div>
               </h1>
             </div>
           </div>
@@ -316,6 +331,10 @@ export default {
                 </div>
               </template>
             </div>
+            <line-info label="Unused XMR" :success="account.xmr > 0">
+              {{ account.xmr }}
+              <small class="text-gray-600">({{ toUsd(account.xmr) }})</small>
+            </line-info>
             <line-info label="Entry Amount" :success="true">
               {{ entryFee }}
               <small class="text-gray-600">({{ toUsd(entryFee) }})</small>
@@ -324,10 +343,6 @@ export default {
               <span :class="[
                 account.entries > 0 ? 'underline cursor-pointer' : null,
               ]" @click="account.entries > 0 ? viewEntries(account.id) : null">{{ account.entries }}</span>
-            </line-info>
-            <line-info label="Unused XMR" :success="account.xmr > 0">
-              {{ account.xmr }}
-              <small class="text-gray-600">({{ toUsd(account.xmr) }})</small>
             </line-info>
             <line-info label="Referrals" :success="account.referrals > 0">{{ account.referrals }}</line-info>
             <div class="text-center">

@@ -250,6 +250,10 @@ func pickWinner() error {
 		Amount:  amt.Maintenance,
 		Address: util.Config.MaintAddress,
 	})
+	tr.Destinations = append(tr.Destinations, monerorpc.Destination{
+		Amount:  amt.Fund,
+		Address: util.Config.FundAddress,
+	})
 	winAmount := float64(amt.Winner)
 	destinations := make(map[string]uint64)
 	for _, winAccount := range winAccounts {
