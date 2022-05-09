@@ -255,7 +255,7 @@ export default {
     <div class="grid grid-cols-12 gap-0">
       <div
         class="bg-fixed relative col-span-12 sm:col-span-12 md:col-span-7 lg:col-span-8 xxl:col-span-8 hidden md:block">
-        <img src="./assets/m_bg.png" class="w-full" />
+        <img src="./assets/logo.png" class="w-full px-32" />
         <div class="absolute inset-0 z-20 flex items-center justify-center h-full bg-gray-900 bg-opacity-50">
           <div class="flex text-center h-full items-center fixed top-0" v-if="info">
             <div class="border-2 p-4 rounded-md bg-gray-100 text-gray-500">
@@ -270,7 +270,8 @@ export default {
         <div>
           <div class="border-b">
             <div class="my-4 px-6">
-              <h2 class="font-semibold text-2xl">
+              <h2 class="font-semibold text-2xl flex">
+                <img src="./assets/logo.png" class="w-8 mr-2 md:hidden" />
                 Monero Pot
                 <span v-if="info.wallet_offline" class="bg-red-600 p-2 rounded-lg text-white font-bold">Wallet
                   Offline</span>
