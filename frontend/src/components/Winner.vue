@@ -53,12 +53,12 @@ export default {
     },
     calcMatches() {
       this.matchInfo = {
-        hash: sha256(this.info.last_winner.sign_key + this.testId),
+        hash: sha256(this.winInfo.sign_key + this.testId),
         indexes: [],
         count: 0
       };
-      for (let i = 0; i < this.info.last_winner.block.length; i++) {
-        if (this.info.last_winner.block[i] === this.matchInfo.hash[i]) {
+      for (let i = 0; i < this.winInfo.block.length; i++) {
+        if (this.winInfo.block[i] === this.matchInfo.hash[i]) {
           this.matchInfo.count++;
           this.matchInfo.indexes.push(i);
         }
@@ -78,10 +78,12 @@ export default {
       const key = year + "-" + month
       if (cache[key]) {
         this.winner = cache[key];
+        this.calcMatches();
       } else {
         axios.get("/api/internal/Winner?dt=" + key).then(resp => {
           this.winner = resp.data;
           cache[key] = resp.data
+          this.calcMatches();
         });
       }
     }
