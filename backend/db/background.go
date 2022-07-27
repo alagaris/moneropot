@@ -191,6 +191,11 @@ func entriesFromAmount(amount uint64) (int64, uint64) {
 }
 
 func RunBackground() {
+	// Check wallet first
+	if err := syncWallet(); err != nil {
+		panic(err)
+	}
+
 	// do price updates every 3AM
 	time.AfterFunc(AtHourMinute(3, 0), priceUpdate)
 	// pick winner every first of the month

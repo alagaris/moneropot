@@ -3,6 +3,7 @@ package db
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"moneropot/util"
 	"strconv"
 
@@ -272,4 +273,67 @@ func GetEntries(accountID int64, page int) ([]Entry, error) {
 		return nil, fmt.Errorf("GetEntries error %v", err)
 	}
 	return entries, nil
+}
+
+// check current wallet if matches db
+func syncWallet() error {
+	db := MustDB()
+	var (
+		accounts []Account
+	)
+	sql := `SELECT * FROM accounts ORDER BY address_index`
+	if err := db.Select(&accounts, sql); err != nil {
+		return fmt.Errorf("syncWallet select error %v", err)
+	}
+
+	addressMap := map[uint64]string{}
+	acctMap := make(map[uint64]*Account)
+	walletLock.Lock()
+	r, err := Wallet.GetAddress(&monerorpc.GetAddressRequest{})
+	walletLock.Unlock()
+	if err != nil {
+		return fmt.Errorf("syncWallet GetAddress error %v", err)
+	}
+	for _, v := range r.Addresses {
+		if v.AddressIndex > 0 {
+			addressMap[v.AddressIndex] = v.Address
+		}
+	}
+	for i := range accounts {
+		acct := &accounts[i]
+		acctMap[acct.AddressIndex] = acct
+	}
+	wt := len(addressMap)
+	at := len(accounts)
+	log.Println("Wallet Total: ", wt, " Accounts Total: ", at)
+	h := wt
+	if at > h {
+		h = at
+	}
+	sql = ""
+	for i := 1; i <= h; i++ {
+		k := uint64(i)
+		acct, okAcct := acctMap[k]
+		addr, okAddr := addressMap[k]
+		if !okAcct && okAddr {
+			sql += fmt.Sprintf(`INSERT INTO accounts (address_index, address, active) VALUES (%d, '%s', 0);`, k, addr)
+		} else if !okAddr && okAcct {
+			walletLock.Lock()
+			r, err := Wallet.CreateAddress(&monerorpc.CreateAddressRequest{})
+			walletLock.Unlock()
+			if err != nil {
+				return fmt.Errorf("syncWallet GetAddress error %v", err)
+			}
+			sql += fmt.Sprintf(`UPDATE accounts SET address = '%s' WHERE address_index = %d;`, r.Address, r.AddressIndex)
+		} else if acct.Address != addr {
+			sql += fmt.Sprintf(`UPDATE accounts SET address = '%s' WHERE address_index = %d;`, addr, k)
+		}
+	}
+	if len(sql) > 0 {
+		log.Println("syncing wallet...")
+		if _, err := db.Exec(sql); err != nil {
+			return fmt.Errorf("syncWallet db.Exec error %v", err)
+		}
+	}
+	return nil
 }

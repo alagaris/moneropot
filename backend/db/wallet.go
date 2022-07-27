@@ -32,7 +32,7 @@ func IsValidAddress(address string) error {
 
 func GetWalletAddress() (string, error) {
 	walletLock.Lock()
-	r, err := Wallet.GetAddress(&monerorpc.GetAddressRequest{})
+	r, err := Wallet.GetAddress(&monerorpc.GetAddressRequest{AddressIndex: []uint64{0}})
 	walletLock.Unlock()
 	if err != nil {
 		return "", err

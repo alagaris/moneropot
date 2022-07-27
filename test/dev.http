@@ -68,6 +68,20 @@ Content-Type: application/json
 
 ###
 
+POST {{appWallet}}/json_rpc
+Content-Type: application/json
+
+{
+    "jsonrpc": "2.0",
+    "id": "0",
+    "method": "get_address",
+    "params": {
+        "account_index": 0
+    }
+}
+
+###
+
 POST {{mineWallet}}/json_rpc
 Content-Type: application/json
 
@@ -174,8 +188,8 @@ Content-Type: application/json
     "method": "transfer",
     "params": {
         "destinations": [{
-            "amount": 15274150456 ,
-            "address": "Bdu3DzboP9w6v4gcobBk4MQE7eHvEUaKe4mE8mWvN3nuaVMXQm7DtgE27jboLj817yhk9vKBqfbhcJTdMCCJxR7X6nZ7xSM"
+            "amount": 16117130953 ,
+            "address": "BYNyo43VAbQQphtjSGgPAC5uML9TAvs1r9XkeiaKvUKRdbpmMEGuB6xd2yJSxUoC2WJUN6hGnmCmVAAMakuRjqbeF44thmG"
         }],
         "do_not_relay": false
     }
