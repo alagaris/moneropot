@@ -122,11 +122,11 @@ func XmrToUSD(force bool) (uint64, error) {
 	wg.Add(2)
 	go func() {
 		defer wg.Done()
-		btcUSD, errBTC = PriceMarket("USDT-BTC")
+		btcUSD, errBTC = PriceMarket("BTC-USDT")
 	}()
 	go func() {
 		defer wg.Done()
-		xmrBTC, errXMR = PriceMarket("BTC-XMR")
+		xmrBTC, errXMR = PriceMarket("XMR-BTC")
 	}()
 	wg.Wait()
 	if errBTC != nil {
