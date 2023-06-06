@@ -1,4 +1,4 @@
-FROM node:lts-alpine as clientbuilder
+FROM node:16-alpine as clientbuilder
 
 WORKDIR /build
 
@@ -6,7 +6,7 @@ ADD frontend /build/
 RUN npm install
 RUN npm run build
 
-FROM golang:1.17-alpine as builder
+FROM golang:1.20-alpine as builder
 
 WORKDIR /build
 
