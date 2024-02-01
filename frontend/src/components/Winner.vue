@@ -20,7 +20,7 @@ export default {
       );
     },
     xmrWinnings() {
-      const amount = this.winInfo.amount + "";
+      const amount = (this.winInfo.amount + "").padStart(12, '0');
       const l = amount.length;
       return amount.substr(0, l - 12) + "." + amount.substr(l - 12);
     },
