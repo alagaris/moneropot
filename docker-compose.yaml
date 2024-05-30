@@ -1,4 +1,3 @@
-version: "3"
 services:
   testnet:
     image: "ghcr.io/alagaris/monero-private-testnet:latest"
